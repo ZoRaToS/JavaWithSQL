@@ -28,11 +28,17 @@ public class CRUD {
         System.out.printf("Added %d rows", rows);
     }
 
+    /**
+     * @param connection
+     * @param scanner
+     * @param statement
+     * @throws SQLException
+     */
     void deleteTable(Connection connection, Scanner scanner, Statement statement) throws SQLException {
         scanner = new Scanner(System.in);
         System.out.println("Enter table name to delete\n");
         String tableName = scanner.nextLine();
-        String sqlComand = String.format("DELETE TABLE %s", tableName);
+        String sqlComand = String.format("DROP TABLE %s", tableName);
         try {
             statement = connection.createStatement();
             statement.executeUpdate(sqlComand);

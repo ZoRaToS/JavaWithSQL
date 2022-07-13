@@ -8,17 +8,17 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class App {
-    public static Scanner scanner = null;
-    public static Statement statement = null;
-    public static Connection connection = null;
-    public static ArrayList<String> listOfComand = new ArrayList<String>();
+    static ArrayList<String> listOfCommand = new ArrayList<String>();
 
     static {
-        listOfComand.add("create table");
-        listOfComand.add("delete table");
+        listOfCommand.add("create table");
+        listOfCommand.add("delete table");
     }
 
     public static void main(String[] args) throws Exception {
+        Scanner scanner = null;
+        Statement statement = null;
+        Connection connection = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
@@ -31,7 +31,8 @@ public class App {
             // System.out.println(e);
         }
 
-        consoleComandController(connection, scanner);
+        String cmd = consoleCommandController(scanner);
+        consoleCommandExecuter(cmd, connection, scanner, statement);
     }
 
     // Get connection from data base
@@ -48,28 +49,29 @@ public class App {
     }
 
     // Console comand controller
-    public static void consoleComandController(Connection connection, Scanner scanner) throws SQLException {
-        System.out.println("What do you want?\n");
-        String comand = new Scanner(System.in).nextLine();
+    public static String consoleCommandController(Scanner scanner) throws SQLException {
+        System.out.println("What do you want?");
+        scanner = new Scanner(System.in);
+        String command = "";
+        command = scanner.nextLine();
 
-        while (scanner.hasNext()) {
-            for (String cmd : listOfComand) {
-                if (!comand.equals(cmd)) {
-                    System.out.println("command does not exist");
-                    scanner.next();
-                } else
-                    break;
+        while (!listOfCommand.contains(command)) {
 
-            }
+            System.out.println("Command does not exist");
+            command = scanner.nextLine();
 
         }
+        return command;
+    }
 
+    public static void consoleCommandExecuter(String comand, Connection connection, Scanner scanner,
+            Statement statement) throws SQLException {
         switch (comand) {
             case "create table":
                 new CRUD().createTable(connection, scanner, statement);
                 System.out.println("Table sucsesful created");
                 break;
-            case "delet table":
+            case "delete table":
                 new CRUD().deleteTable(connection, scanner, statement);
                 System.out.println("Table sucsesful deleted");
         }
