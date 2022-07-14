@@ -25,27 +25,35 @@ public class App {
             connection = getConnection();
             System.out.println("Connection to Store DB succesfull!");
             // System.out.println(connection);
+            String cmd = consoleCommandController(scanner);
+            consoleCommandExecuter(cmd, connection, scanner, statement);
 
         } catch (Exception e) {
             System.out.println("Connection failed...");
-            // System.out.println(e);
+            System.out.println(e);
         }
-
-        String cmd = consoleCommandController(scanner);
-        consoleCommandExecuter(cmd, connection, scanner, statement);
     }
 
     // Get connection from data base
     public static Connection getConnection() throws SQLException, IOException {
+        //
+        String url = "";
+        String username = "";
+        String password = "";
         Properties properties = new Properties();
         try (InputStream inputStream = Files.newInputStream(Paths.get("database.ini"))) {
             properties.load(inputStream);
-        }
-        String url = properties.getProperty("url");
-        String username = properties.getProperty("username");
-        String password = properties.getProperty("password");
 
+            url = properties.getProperty("url");
+            username = properties.getProperty("username");
+            password = properties.getProperty("password");
+
+        } catch (IOException ioException) {
+            System.out.println(ioException);
+        }
+        ;
         return DriverManager.getConnection(url, username, password);
+
     }
 
     // Console comand controller

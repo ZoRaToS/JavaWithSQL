@@ -17,7 +17,7 @@ public class CRUD {
 
         statement = connection.createStatement();
         statement.executeUpdate(sqlComand);
-
+        scanner.close();
     }
 
     // Inset data to table
