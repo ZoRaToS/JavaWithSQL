@@ -62,7 +62,7 @@ public class App {
         scanner = new Scanner(System.in);
         String command = "";
         command = scanner.nextLine();
-
+        scanner.close();
         while (!listOfCommand.contains(command)) {
 
             System.out.println("Command does not exist");
