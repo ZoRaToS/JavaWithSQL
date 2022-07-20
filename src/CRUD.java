@@ -34,10 +34,12 @@ public class CRUD {
      * @param statement
      * @throws SQLException
      */
+
     void deleteTable(Connection connection, Scanner scanner, Statement statement) throws SQLException {
         scanner = new Scanner(System.in);
         System.out.println("Enter table name to delete\n");
         String tableName = scanner.nextLine();
+        scanner.close();
         String sqlComand = String.format("DROP TABLE %s", tableName);
         try {
             statement = connection.createStatement();
@@ -46,6 +48,5 @@ public class CRUD {
             System.out.println("Failed to delete the table: " + exception);
 
         }
-
     }
 }
